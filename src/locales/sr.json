@@ -1,0 +1,12 @@
+{
+  "home": {
+    "listen": "Slušajte odličnu muziku!"
+  },
+  "register": {
+    "TOS": "",
+    "accept": ""
+  },
+  "song": {
+    "comment_count": ""
+  }
+}
