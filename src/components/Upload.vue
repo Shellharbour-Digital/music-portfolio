@@ -63,6 +63,20 @@ export default {
         if (file.type !== 'audio/mpeg') {
           return;
         }
+
+        // Handling offline uploads
+        if (!navigator.onLine) {
+          this.uploads.push({
+            task: {},
+            current_progress: 100,
+            name: file.name,
+            variant: 'bg-red-400',
+            icon: 'fas fa-times',
+            text_class: 'text-red-400',
+          });
+          return;
+        }
+
         const storageRef = storage.ref(); // music-d7b6a.appspot.com
         const songsRef = storageRef.child(`songs/${file.name}`); // music-d7b6a.appspot.com/songs/example.mp3
         const task = songsRef.put(file);
