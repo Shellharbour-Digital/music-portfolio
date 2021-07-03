@@ -9,7 +9,8 @@
         <!-- Play/Pause Button -->
         <button type="button" class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full
             focus:outline-none" @click.prevent="newSong(song)">
-            <i class="fas fa-play"></i>
+            <i class="fas"
+              :class="{ 'fa-play': !songPageToggle, 'fa-pause': songPageToggle }"></i>
         </button>
         <div class="z-50 text-left ml-8">
             <!-- Song Info -->
@@ -72,7 +73,7 @@
 
 <script>
 import { songsCollection, auth, commentsCollection } from '@/includes/firebase';
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'Song',
@@ -93,6 +94,7 @@ export default {
   computed: {
     // Get userLoggedIn from store and display form in they are logged in
     ...mapState(['userLoggedIn']),
+    ...mapGetters(['songPageToggle']),
     sortedComments() {
       // computed properties should not change data propeties. this is a work around
       // slice returns a new array as without it there is an eslint error

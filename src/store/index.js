@@ -2,6 +2,8 @@ import { createStore } from 'vuex';
 import { auth, usersCollection } from '@/includes/firebase';
 import { Howl } from 'howler';
 import helper from '@/includes/helper';
+// eslint-disable-next-line import/no-cycle
+import router from '@/router/index';
 
 export default createStore({
   state: {
@@ -12,6 +14,7 @@ export default createStore({
     seek: '00:00',
     duration: '00:00',
     playerProgress: '0%',
+    playingRoute: '',
   },
   mutations: {
     toggleAuthModal: (state) => {
@@ -36,12 +39,21 @@ export default createStore({
       // numeric value between 0 and 100
       state.playerProgress = `${(state.sound.seek() / state.sound.duration()) * 100}%`;
     },
+    updatePlayingRoute(state, route) {
+      state.playingRoute = route;
+    },
   },
   getters: {
     // authModalShow: (state) => state.authModalShow,
     playing: (state) => {
       // computed function to toggle play and pause button
       if (state.sound.playing) {
+        return state.sound.playing();
+      }
+      return false;
+    },
+    songPageToggle: (state) => {
+      if (state.playingRoute === router.currentRoute.value.params.id) {
         return state.sound.playing();
       }
       return false;
@@ -88,25 +100,42 @@ export default createStore({
       // }
     },
     async newSong({ commit, state, dispatch }, payload) {
-      // TODO: Update play button on song page
+      // If the song is currently active don't create a new Howl object
+      if (payload.original_name === state.currentSong.original_name) {
+        // Check if there is an existing Howl object just to be safe
+        if (!state.sound.playing) {
+          return;
+        }
 
-      // Delete the current song instance and remove it from memory if it exists
-      if (state.sound instanceof Howl) {
-        state.sound.unload();
-      }
+        // If the playing function exists on the Howl object pause the song
+        if (state.sound.playing()) {
+          state.sound.pause();
+        } else {
+          state.sound.play();
+        }
+      } else {
+        // Delete the current song instance and remove it from memory if it exists
+        if (state.sound instanceof Howl) {
+          state.sound.unload();
+        }
 
-      commit('newSong', payload);
+        // call the updatePlayingRoute mutation
+        commit('updatePlayingRoute', router.currentRoute.value.params.id);
 
-      state.sound.play();
+        // call the newSong mutation
+        commit('newSong', payload);
 
-      // listen to the play event
-      state.sound.on('play', () => {
+        state.sound.play();
+
+        // listen to the play event
+        state.sound.on('play', () => {
         // similar to setInterval function.
         // except this gets called before the next frame is painted onto the screen.
-        requestAnimationFrame(() => {
-          dispatch('progress');
+          requestAnimationFrame(() => {
+            dispatch('progress');
+          });
         });
-      });
+      }
     },
     async toggleAudio({ state }) {
       // Check if there is an existing Howl object
