@@ -3,10 +3,10 @@
     "listen": " Écoutez de la bonne musique!"
   },
   "register": {
-    "TOS": "",
-    "accept": ""
+    "TOS": "Conditions d'utilisation",
+    "accept": "J'accepte la musique {0}"
   },
   "song": {
-    "comment_count": ""
+    "comment_count": "Sans commentaires | 1 Commenter | {count} Commentaires"
   }
 }

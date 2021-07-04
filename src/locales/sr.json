@@ -3,10 +3,10 @@
     "listen": "Slušajte odličnu muziku!"
   },
   "register": {
-    "TOS": "",
-    "accept": ""
+    "TOS": "Uslovi korišćenja",
+    "accept": "Prihvatam muzičku {0}"
   },
   "song": {
-    "comment_count": ""
+    "comment_count": "Nema komentara | 1 Komentar | {count} Komentari"
   }
 }
