@@ -10,6 +10,11 @@ import './assets/main.css';
 import i18n from './includes/i18n';
 import './registerServiceWorker';
 import GlobalComponents from './includes/_globals';
+import ProgressBar from './includes/progress-bar';
+import 'nprogress/nprogress.css';
+
+// Make the router object accessible in the progress bar file
+ProgressBar(router);
 
 let app;
 
