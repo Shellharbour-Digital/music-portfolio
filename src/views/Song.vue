@@ -97,7 +97,9 @@ export default {
   },
   computed: {
     // Get userLoggedIn from store and display form in they are logged in
-    ...mapState(['userLoggedIn']),
+    ...mapState({
+      userLoggedIn: (state) => state.auth.userLoggedIn,
+    }),
     ...mapGetters(['songPageToggle']),
     sortedComments() {
       // computed properties should not change data propeties. this is a work around

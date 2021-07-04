@@ -63,7 +63,9 @@ export default {
     'icon-secondary': IconSecondary,
   },
   computed: {
-    ...mapState(['userLoggedIn']),
+    ...mapState({
+      userLoggedIn: (state) => state.auth.userLoggedIn,
+    }),
   },
   data() {
     return {
