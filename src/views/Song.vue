@@ -117,23 +117,27 @@ export default {
       });
     },
   },
-  async created() {
+  async beforeRouteEnter(to, from, next) {
     // Get the song from firebase querying for the id from the route
-    const docSnapshot = await songsCollection.doc(this.$route.params.id).get();
+    const docSnapshot = await songsCollection.doc(to.params.id).get();
 
+    next((vm) => {
     // Redirect to home if song doesn't exist
-    if (!docSnapshot.exists) {
-      this.$router.push({ name: 'home' });
-      return;
-    }
+      if (!docSnapshot.exists) {
+        vm.$router.push({ name: 'home' });
+        return;
+      }
 
-    // Grab the sort param, update the sort prop but not assing it to the query param
-    const { sort } = this.$route.query;
-    // make sure the query param is a valid value
-    this.sort = sort === '1' || sort === '2' ? sort : '1';
+      // Grab the sort param, update the sort prop but not assing it to the query param
+      const { sort } = vm.$route.query;
+      // make sure the query param is a valid value
+      // eslint-disable-next-line no-param-reassign
+      vm.sort = sort === '1' || sort === '2' ? sort : '1';
 
-    this.song = docSnapshot.data();
-    this.getComments();
+      // eslint-disable-next-line no-param-reassign
+      vm.song = docSnapshot.data();
+      vm.getComments();
+    });
   },
   methods: {
     ...mapActions(['newSong']),
