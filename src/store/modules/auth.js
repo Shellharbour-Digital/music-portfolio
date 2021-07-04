@@ -1,6 +1,7 @@
 import { auth, usersCollection } from '@/includes/firebase';
 
 export default {
+  // namespaced: true,
   state: {
     authModalShow: false,
     userLoggedIn: false,

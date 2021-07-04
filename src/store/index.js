@@ -1,11 +1,6 @@
 import { createStore } from 'vuex';
-import auth from './modules/auth';
-// eslint-disable-next-line import/no-cycle
-import player from './modules/player';
+import modules from './modules';
 
 export default createStore({
-  modules: {
-    auth,
-    player,
-  },
+  modules,
 });
