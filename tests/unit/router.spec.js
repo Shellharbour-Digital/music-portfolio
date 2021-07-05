@@ -16,7 +16,7 @@ describe('Router', () => {
       },
     });
 
-    expect(wrapper.findComponent(RouterLinkStub).props().to).toEqual({
+    expect(wrapper.findComponent('router-link-stub').props().to).toEqual({
       name: 'song', params: { id: song.docId },
     });
   });
